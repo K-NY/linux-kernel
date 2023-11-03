@@ -1,14 +1,23 @@
-# SPDX-License-Identifier: GPL-2.0-only
+# SPDX-License-Identifier: GPL-2.0
 #
-# Makefile for the linux journaling routines.
+# Makefile for the linux ext4-filesystem routines.
 #
 
-obj-m += jbd3.o
+obj-m += pxt4.o
 
-jbd3-objs := transaction.o commit.o recovery.o checkpoint.o revoke.o journal.o
+pxt4-y	:= balloc.o bitmap.o block_validity.o dir.o pxt4_jbd3.o extents.o \
+		extents_status.o file.o fsmap.o fsync.o hash.o ialloc.o \
+		indirect.o inline.o inode.o ioctl.o mballoc.o migrate.o \
+		mmp.o move_extent.o namei.o page-io.o readpage.o resize.o \
+		super.o symlink.o sysfs.o xattr.o xattr_trusted.o xattr_user.o
 
-KDIR    := /lib/modules/$(shell uname -r)/build
-PWD     := $(shell pwd)
+pxt4-m	+= acl.o
+pxt4-m	+= xattr_security.o
+pxt4-m  += verity.o
+
+
+KDIR	:= /lib/modules/$(shell uname -r)/build
+PWD	:= $(shell pwd)
 
 default:
 	$(MAKE) -C $(KDIR) M=$(PWD) modules
